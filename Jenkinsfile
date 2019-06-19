@@ -35,6 +35,9 @@ pipeline {
                     sh "python setup.py test"
                     sh "pip install ."
                 }
+                container('sonar') {
+                    sh "sonar-scanner -Dsonar.github.oauth=${env.GITHUB_TOKEN} -Dsonar.pullrequest.base=${CHANGE_TARGET} -Dsonar.pullrequest.branch=${BRANCH_NAME} -Dsonar.pullrequest.key=${env.CHANGE_ID} -Dsonar.pullrequest.provider=GitHub -Dsonar.pullrequest.github.repository=molgenis/molgenis-py-consensus"
+                }
             }
         }
         stage('Build: [ master ]') {
